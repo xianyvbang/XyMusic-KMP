@@ -199,16 +199,14 @@ fun JvmMusicPlayerComponent(
         overlayVisibleState.targetState = mainViewModel.sheetState
     }
     DisposableEffect(mainViewModel.sheetState, chromeController, playerHitTestOwner) {
+        val previousTitleBarHitTestState = chromeController.captureTitleBarHitTestState()
         if (mainViewModel.sheetState) {
             // 弹层打开时临时接管标题栏命中测试，关闭后交还给主窗口标题栏。
             chromeController.setTitleBarHitTestOwner(playerHitTestOwner)
             chromeController.setTitleBarHitTestEnabled(true)
         }
         onDispose {
-            if (mainViewModel.sheetState) {
-                chromeController.setTitleBarHitTestOwner(null)
-            }
-            chromeController.setTitleBarHitTestEnabled(true)
+            chromeController.restoreTitleBarHitTestState(previousTitleBarHitTestState)
         }
     }
     if (overlayVisibleState.currentState || overlayVisibleState.targetState) {

@@ -8,6 +8,7 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.geometry.Rect
 import cn.xybbz.config.window.DesktopWindowChromeController
 import cn.xybbz.config.window.DesktopWindowTitleBarHitTestOwner
+import cn.xybbz.config.window.DesktopWindowTitleBarHitTestState
 import com.sun.jna.Native
 import com.sun.jna.NativeLibrary
 import com.sun.jna.Pointer
@@ -72,6 +73,20 @@ class WindowsDesktopWindowChromeController(
 
     override fun updateCloseButtonBounds(bounds: Rect) {
         closeButtonBounds = bounds
+    }
+
+    override fun captureTitleBarHitTestState(): DesktopWindowTitleBarHitTestState {
+        return DesktopWindowTitleBarHitTestState(
+            titleBarBounds = titleBarBounds,
+            hitTestOwner = titleBarHitTestOwner,
+            hitTestEnabled = titleBarHitTestEnabled,
+        )
+    }
+
+    override fun restoreTitleBarHitTestState(state: DesktopWindowTitleBarHitTestState) {
+        titleBarBounds = state.titleBarBounds
+        titleBarHitTestOwner = state.hitTestOwner
+        titleBarHitTestEnabled = state.hitTestEnabled
     }
 
     override fun setTitleBarHitTestOwner(hitTestOwner: DesktopWindowTitleBarHitTestOwner?) {
