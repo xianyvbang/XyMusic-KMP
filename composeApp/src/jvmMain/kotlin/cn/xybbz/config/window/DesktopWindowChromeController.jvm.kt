@@ -19,6 +19,10 @@ interface DesktopWindowChromeController {
 
     fun updateCloseButtonBounds(bounds: Rect)
 
+    fun captureTitleBarHitTestState(): DesktopWindowTitleBarHitTestState
+
+    fun restoreTitleBarHitTestState(state: DesktopWindowTitleBarHitTestState)
+
     fun setTitleBarHitTestOwner(hitTestOwner: DesktopWindowTitleBarHitTestOwner?)
 
     fun setTitleBarHitTestEnabled(enabled: Boolean)
@@ -42,6 +46,11 @@ interface DesktopWindowChromeController {
 
             override fun updateCloseButtonBounds(bounds: Rect) = Unit
 
+            override fun captureTitleBarHitTestState(): DesktopWindowTitleBarHitTestState =
+                DesktopWindowTitleBarHitTestState()
+
+            override fun restoreTitleBarHitTestState(state: DesktopWindowTitleBarHitTestState) = Unit
+
             override fun setTitleBarHitTestOwner(hitTestOwner: DesktopWindowTitleBarHitTestOwner?) = Unit
 
             override fun setTitleBarHitTestEnabled(enabled: Boolean) = Unit
@@ -52,3 +61,9 @@ interface DesktopWindowChromeController {
         }
     }
 }
+
+data class DesktopWindowTitleBarHitTestState(
+    val titleBarBounds: Rect = Rect.Zero,
+    val hitTestOwner: DesktopWindowTitleBarHitTestOwner? = null,
+    val hitTestEnabled: Boolean = true,
+)
